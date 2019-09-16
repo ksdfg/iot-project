@@ -1,2 +1,2 @@
 blynklib
-adafruit-ads1x15K
+adafruit-ads1x15
