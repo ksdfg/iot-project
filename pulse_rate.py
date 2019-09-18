@@ -47,7 +47,7 @@ def measure(func):
     global lastTime
 
     # read from the ADC
-    signal = analog_in.AnalogIn(adc, ads.P0).value  # get input from channel a0
+    signal = analog_in.AnalogIn(adc, ads.P0).voltage  # get input from channel a0
     curtime = int(time.time() * 1000)
 
     sampleCounter += curtime - lastTime  # # keep track of the time in mS with this variable
