@@ -47,7 +47,7 @@ def measure(func):
     global lastTime
 
     # read from the ADC
-    signal = analog_in.AnalogIn(adc, ads.P0).value()  # TODO: Select the correct ADC channel. I have selected A0 here
+    signal = analog_in.AnalogIn(adc, ads.P0).value  # TODO: Select the correct ADC channel. I have selected A0 here
     curtime = int(time.time() * 1000)
 
     sampleCounter += curtime - lastTime  # # keep track of the time in mS with this variable
