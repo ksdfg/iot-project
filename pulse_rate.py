@@ -3,7 +3,7 @@ import time
 # Import the ADS1x15 module.
 import Adafruit_ADS1x15
 
-adc = Adafruit_ADS1x15.ADS1015()
+adc = Adafruit_ADS1x15.ADS1115()
 
 # initialization 
 GAIN = 2 / 3
@@ -50,7 +50,6 @@ def measure(func):
     sampleCounter += curtime - lastTime  # # keep track of the time in mS with this variable
     lastTime = curtime
     n = sampleCounter - lastBeatTime  # # monitor the time since the last beat to avoid noise
-    # print n, signal, curtime, sampleCounter, lastBeatTime
 
     # find the peak and trough of the pulse wave
     if signal < thresh and n > (IBI / 5.0) * 3.0:  # # avoid dichrotic noise by waiting 3/5 of last IBI

@@ -23,9 +23,11 @@ def measure():
     while True:
         if measuring:  # measure pulse rate here
             pr.lastTime = int(time() * 1000)  # set to current time
+            pr.adc.start_adc()
             pr.measure(lambda x: blynk.virtual_write(0, x))  # measure pulse and send to app
             sleep(0.005)
         else:
+            pr.adc.stop_adc()
             print('not measuring')
 
 
