@@ -1,9 +1,12 @@
 import time
 
 # Import the ADS1x15 module.
-import Adafruit_ADS1x15
+import adafruit_ads1x15.ads1115 as ads
+import adafruit_ads1x15.analog_in as analog_in
+import board
+import busio
 
-adc = Adafruit_ADS1x15.ADS1115()
+adc = ads.ADS1115(busio.I2C(board.SCL, board.SDA))
 
 # initialization 
 GAIN = 2 / 3
@@ -44,7 +47,7 @@ def measure(func):
     global lastTime
 
     # read from the ADC
-    signal = adc.read_adc(0, gain=GAIN)  # TODO: Select the correct ADC channel. I have selected A0 here
+    signal = analog_in(adc, ads.P0).value()  # TODO: Select the correct ADC channel. I have selected A0 here
     curtime = int(time.time() * 1000)
 
     sampleCounter += curtime - lastTime  # # keep track of the time in mS with this variable
@@ -91,7 +94,7 @@ def measure(func):
             bpm = 60000 / running_total  # how many beats can fit into a minute? that's bpm!
             func('bpm: {}'.format(bpm))
 
-    if signal < thresh and Pulse == True:  # when the values are going down, the beat is over
+    if signal < thresh and Pulse:  # when the values are going down, the beat is over
         Pulse = False  # reset the Pulse flag so we can do it again
         amp = P - T  # get amplitude of the pulse wave
         thresh = amp / 2 + T  # set thresh at 50% of the amplitude
