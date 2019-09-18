@@ -1,8 +1,8 @@
 import time
 
 # Import the ADS1x15 module.
-import Adafruit_ADS1x15.ads1115 as ads
-import Adafruit_ADS1x15.analog_in as analog_in
+import adafruit_ads1x15.ads1115 as ads
+import adafruit_ads1x15.analog_in as analog_in
 import board
 import busio
 
@@ -47,7 +47,7 @@ def measure(func):
     global lastTime
 
     # read from the ADC
-    signal = analog_in.AnalogIn(adc, ads.P0).value  # TODO: Select the correct ADC channel. I have selected A0 here
+    signal = analog_in.AnalogIn(adc, ads.P0).value  # get input from channel a0
     curtime = int(time.time() * 1000)
 
     sampleCounter += curtime - lastTime  # # keep track of the time in mS with this variable
