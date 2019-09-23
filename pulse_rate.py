@@ -101,6 +101,15 @@ def measure(func):
         P = thresh  # reset these for next time
         T = thresh
 
+        if n > 2500:  # if 2.5 seconds go by without a beat
+            thresh = 512  # set thresh default
+            P = 512  # set P default
+            T = 512  # set T default
+            lastBeatTime = sampleCounter  # bring the lastBeatTime up to date
+            firstBeat = True  # set these to avoid noise
+            secondBeat = False  # when we get the heartbeat back
+            print("no beats found")
+
 
 if __name__ == '__main__':
     while True:
