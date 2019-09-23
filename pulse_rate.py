@@ -9,7 +9,7 @@ import busio
 adc = ads.ADS1115(busio.I2C(board.SCL, board.SDA))
 
 # initialization 
-GAIN = 2 / 3
+GAIN = 1 / 3
 curState = 0
 thresh = 525  # mid point in the waveform
 P = 512
@@ -27,7 +27,7 @@ amp = 100
 lastTime = int(time.time() * 1000)
 
 
-# Main loop. use Ctrl-c to stop the code
+# function to measure pulse rate
 def measure(func):
     # var list reqd.
     global GAIN
@@ -47,7 +47,7 @@ def measure(func):
     global lastTime
 
     # read from the ADC
-    signal = analog_in.AnalogIn(adc, ads.P0).voltage  # get input from channel a0
+    signal = analog_in.AnalogIn(adc, ads.P0).value  # get input from channel a0
     curtime = int(time.time() * 1000)
 
     sampleCounter += curtime - lastTime  # # keep track of the time in mS with this variable
@@ -91,7 +91,7 @@ def measure(func):
             rate[9] = IBI  # add the latest IBI to the rate array
             running_total += rate[9]  # add the latest IBI to running_total
             running_total /= 10  # average the last 10 IBI values 
-            bpm = 60000 / running_total  # how many beats can fit into a minute? that's bpm!
+            bpm = GAIN * 60000 / running_total  # how many beats can fit into a minute? that's bpm!
             func('bpm: {}'.format(bpm))
 
     if signal < thresh and Pulse:  # when the values are going down, the beat is over
