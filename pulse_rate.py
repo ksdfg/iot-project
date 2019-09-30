@@ -6,6 +6,8 @@ import adafruit_ads1x15.analog_in as analog_in
 import board
 import busio
 
+import requests
+
 adc = ads.ADS1115(busio.I2C(board.SCL, board.SDA))
 
 # initialization 
@@ -91,8 +93,15 @@ def measure(func):
             rate[9] = IBI  # add the latest IBI to the rate array
             running_total += rate[9]  # add the latest IBI to running_total
             running_total /= 10  # average the last 10 IBI values 
-            bpm = 60000 / running_total  # how many beats can fit into a minute? that's bpm!
+            bpm = analog_in.normalise(60000 / running_total)  # how many beats can fit into a minute? that's bpm!
             func('bpm: {}'.format(bpm))
+            payload = {
+                    "api_key": "M2QHPYFQQCMH9B0X",
+                    'field1': bpm
+            }
+            requests.post("https://api.thingspeak.com/update", data=payload)
+            
+            
 
     if signal < thresh and Pulse:  # when the values are going down, the beat is over
         Pulse = False  # reset the Pulse flag so we can do it again
@@ -112,6 +121,7 @@ def measure(func):
 
 
 if __name__ == '__main__':
-    while True:
+    while(True):
         measure(print)
         time.sleep(0.005)
+    
