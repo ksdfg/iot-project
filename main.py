@@ -7,7 +7,7 @@ import blynklib
 
 import pulse_rate as pr
 
-blynk = blynklib.Blynk("IwQyTY8WqD0SkkLROJM9mHomLPOrzRrj")
+blynk = blynklib.Blynk("j4jf--bcPE19Hpe3UKXnA07TZM_tdx0o")
 
 measuring = False  # boolean to figure out if we are measuring right now or not
 
@@ -24,7 +24,7 @@ def measure():
     while True:
         if measuring:  # measure pulse rate here
             pr.lastTime = int(time() * 1000)  # set to current time
-            #pr.adc.start_adc()
+            # pr.adc.start_adc()
             pr.measure(lambda x: blynk.virtual_write(0, x))  # measure pulse and send to app
             sleep(0.005)
 
